@@ -1,0 +1,33 @@
+.dropdown-content {
+    display: none;
+}
+.show {
+    display: block;
+}
+
+.bookmark {
+    border: 2px solid black;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+.bookmark-title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.user-rating {
+    text-align: center;
+    font-weight: bold;
+}
+
+.description {
+    text-align: justify;
+    padding: 20px;
+}
+
+.bookmark-controls {
+    text-align: center;
+    margin: 20px;
+}
