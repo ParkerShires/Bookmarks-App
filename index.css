@@ -1,25 +1,24 @@
-.dropdown-content {
-    display: none;
+* {
+    box-sizing: border-box;
 }
+
 .show {
     display: block;
 }
 
-.bookmark {
+.bookmark, .add-form > form {
     border: 2px solid black;
-    margin-bottom: 30px;
+    margin: 15px;
     border-radius: 10px;
-}
-
-.bookmark-title {
-    text-align: center;
-    font-weight: bold;
-    font-size: 25px;
 }
 
 .user-rating {
     text-align: center;
     font-weight: bold;
+}
+
+.hidden {
+    display: none;
 }
 
 .description {
@@ -30,4 +29,108 @@
 .bookmark-controls {
     text-align: center;
     margin: 20px;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.new-bookmark-form {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid black;
+    margin-bottom: 30px;
+    border-radius: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.rating-container {
+    position: relative;
+    display: inline-block;
+    width: 126px;
+}
+
+.dropdown-content a {
+    padding: 2px;
+    text-decoration: none;
+    display: block;
+    border: 1px solid gray;
+    border-radius: 2px;
+    position: relative;
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 9;
+    left: 0;
+    background-color: lightgray;
+    width: 126px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.description-input, .url-input {
+    display: block;
+    width: 100%;
+}
+
+textarea, input {
+    margin: 0;
+    padding: 0;
+}
+
+.add-form {
+    margin: 0 auto;
+    width: 100%;
+}
+
+.header {
+    display: block;
+    width: 100%;
+    position: relative;
+}
+
+.rating-container > button {
+    width: 100%;
+}
+
+.title-input, #js-rating-selector, .description-input, .url-input {
+    border: 2px solid black;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.add-form form {
+    padding: 15px;
+}
+
+.title-input {
+    float: left;
+}
+
+#js-rating-selector {
+    float: right;
+    right: 0;
 }

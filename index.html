@@ -9,16 +9,18 @@
 <body>
     <div class="container">
         <h1>Bookmarks</h1>
+        <div class = "add-form"></div>
         <form id="js-bookmarks-form">
             <button class="js-bookmark-adder">Add a bookmark</button>
-            <button id="js-star-rater" class="js-dropdown-content">Minimum rating</button>
-                <div id="js-dropdown" class="dropdown-content">
-                    <a href="...">0 Stars</a>
-                    <a href="...">1 Stars</a>
-                    <a href="...">2 Stars</a>
-                    <a href="...">3 Stars</a>
-                    <a href="...">4 Stars</a>
-                    <a href="...">5 Stars</a>
+               <div class="rating-container">
+                <button id="js-star-rater" class="js-dropdown-content">Minimum rating</button>
+                   <div class="dropdown-content hidden js-dropdown">
+                    <a href="#">1 Star</a>
+                    <a href="#">2 Stars</a>
+                    <a href="#">3 Stars</a>
+                    <a href="#">4 Stars</a>
+                    <a href="#">5 Stars</a>
+                   </div>
                 </div>
         </form>
         <ul class="js-bookmark-list">
