@@ -3,18 +3,36 @@
 // eslint-disalbe-next-line no-unused-vars
 const bookmarks = (function() {
 
+    const handleGetBookmarks = function() {
+        api.getBookmarks((data) => {
+            data.reverse().map(bookmark => bookmark.hidden = true);
+            store.bookmarks = data;
+            render();
+        })
+    }
+
     const getIdFromBookmark = function(bookmark) {
         return $(bookmark).closest('li').data('bookmark-id');
     }
 
     const generateBookMarkElement = function(bookmark) {
  
-        let bookmarkTitle = bookmark.name;
+        let bookmarkTitle = bookmark.title;
         let bookmarkId = bookmark.id;
         let bookmarkRating = bookmark.rating;
         let bookmarkUrl = bookmark.url;
+        let bookmarkDescription = bookmark.desc;
         let descriptionClass = '';
         let descriptionButtonText = 'Hide';
+        let word = 'Stars';
+
+        if (bookmarkRating == 1) {
+            word = 'Star';
+        }
+
+        if (!bookmarkRating) {
+            bookmarkRating = 0;
+        }
 
         if (bookmark.hidden) {
             descriptionClass = 'hidden';
@@ -22,16 +40,16 @@ const bookmarks = (function() {
         }
 
         return `
-        <li class="bookmark" data-bookmark-id="${bookmarkId}">
+        <li class="bookmark" data-bookmark-id="${bookmarkId}" data-rating= "${bookmarkRating}">
             <p class="title">${bookmarkTitle}</p>
             <div class="content">                
-                <p class="user-rating">Rating: 5 Stars</p>
-                <p class="description ${descriptionClass}">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                <p class="user-rating">Rating: ${bookmarkRating} ${word}</p>
+                <p class="description ${descriptionClass}">${bookmarkDescription}</p>
                 <div class="bookmark-controls">
                     <button>
                         <span class="button-label js-description-button">${descriptionButtonText} description</span>
                     </button>
-                    <button><a href = "..." target = "_blank">
+                    <button><a href = "${bookmarkUrl}" target = "_blank">
                        <span class="button-label js-visit-button">Visit site</span>
                     </a></button>
                     <button>
@@ -43,22 +61,24 @@ const bookmarks = (function() {
     }
 
     const generateBookMarksString = function(bookmarks) {
-        // generateBookMarkElement();
         const bookmarksArray = bookmarks.map((bookmark) => generateBookMarkElement(bookmark));
         return bookmarksArray.join('');
     }
 
     const  render = function(form) {
-        // store.newBookmarkForm ? $('.new-bookmark-form').removeClass('hidden'): $('.new-bookmark-form').addClass('hidden');
-
         let bookmarks = store.bookmarks;
 
         const bookmarksString = generateBookMarksString(bookmarks);
         $('.js-bookmark-list').html(bookmarksString);
 
         if (form) {
-           $('.add-form').html(generateForm())
+           $('.add-form').html(generateForm());
         }
+
+        else {
+            $('.add-form').html('');
+         }
+        
     }
 
     const handleAddBookMarkClicked = function() {
@@ -69,12 +89,55 @@ const bookmarks = (function() {
         })
     }
 
-    // const handleFormSubmit = function() {
-    //     $('.js-bookmark-form').on('submit', function (event) {
-    //         const bookmarkTitle = $('.title-input').val();
-    //         const bookmarkDescription = 
-    //     })
-    // }
+    const handleFormSubmit = function() {
+        $(document).on('click', '.js-bookmark-submitter', function (event) {
+            console.log('submitted');
+            event.preventDefault();
+            const bookmarkTitle = $('.title-input').val();
+            const bookmarkRating = $('#js-rating-selector').text();
+            const bookmarkDescription = $('.description-input').val();
+            const bookmarkUrl = $('.url-input').val();
+
+            const data = {
+                title: bookmarkTitle,
+                rating: parseInt(bookmarkRating),
+                desc: bookmarkDescription,
+                url: bookmarkUrl,
+                hidden: true,
+            }
+
+            api.createBookmark(data, (newBookmark) => {
+                console.log(newBookmark);
+                store.addBookmark(newBookmark);
+                render();
+            })
+        })
+    }
+
+    const handleRatingSelectorDropdown = function() {
+        $(document).on('click', 'a', function(event) {
+            $('.js-dropdown a').each(function() {
+            $(this).attr('data-selected', '') 
+            })
+            $(event.currentTarget).attr('data-selected', 'chosen')
+            $(event.currentTarget).closest('.dropdown-content').prev('.js-dropdown-content').text($(event.currentTarget).text());
+            console.log($(event.currentTarget).closest('.dropdown-content').prev('.js-dropdown-content'));
+
+            const minimum = $(event.currentTarget).closest('.dropdown-content').prev('#js-star-rater').text();
+
+            if (minimum) {
+                $('.bookmark').each(function() {
+                    let rating = $(this).attr('data-rating');
+                    if (rating < parseInt(minimum)) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
+                })
+            }
+        })
+    }
 
     const generateForm = function() {
         return `
@@ -94,6 +157,7 @@ const bookmarks = (function() {
            </div>
             <textarea placeholder = "Description" class = "description-input"></textarea>
             <input placeholder = "Url" class = "url-input"/>
+            <button class = "js-bookmark-submitter" type = "submit">Submit</button>
         </form>
         `
         
@@ -103,7 +167,6 @@ const bookmarks = (function() {
         $('#js-bookmarks-form, .add-form').on('click', '#js-star-rater, #js-rating-selector', event => {
             event.preventDefault();
             console.log('working');
-            // $('#js-dropdown').toggleClass('hidden');
             $(event.currentTarget).next('.js-dropdown').toggleClass('hidden');
         })
     }
@@ -144,11 +207,14 @@ const bookmarks = (function() {
 
     function bindEventListeners() {
 
+        handleGetBookmarks();
         handleAddBookMarkClicked();
         handleDropDownClicked();
+        handleRatingSelectorDropdown();
         handleDescriptionButtonClicked();
         handleVisitButtonClicked();
         handleRemoveBookmarkButtonClicked();
+        handleFormSubmit();
     }
 
     // const render = function() {

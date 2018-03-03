@@ -1,11 +1,7 @@
 // eslint-disable-next-line no-unsed-vars
 
 const store = (function() {
-    const bookmarks = [
-        {name: 'google', id: cuid(), hidden: true,},
-        {name: 'twitter', id: cuid(), hidden: true,},
-        {name: 'instagram', id: cuid(), hidden: true,},
-    ]
+    const bookmarks = [];
 
 const addBookmark = function(bookmark) {
     this.bookmarks.unshift(bookmark);

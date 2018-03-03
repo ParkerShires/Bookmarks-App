@@ -6,7 +6,7 @@ const api = (function() {
 
     const BASE_URL = `https://thinkful-list-api.herokuapp.com/parker/bookmarks`;
 
-    const getBookmarks = callback => {
+    const getBookmarks = function(callback) {
         $.getJSON(BASE_URL, callback);
     };
 
@@ -14,16 +14,6 @@ const api = (function() {
         $.ajax({
             url: BASE_URL,
             method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: callback
-        });
-    };
-
-    const updateBookmark = function(id, updatedBookmark, callback) {
-        $.ajax({
-            url: `${BASE_URL}/${id}`,
-            method: 'PATCH',
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: callback
@@ -43,7 +33,6 @@ const api = (function() {
     return {
         getBookmarks,
         createBookmark,
-        updateBookmark,
         deleteBookmark,
     };
 

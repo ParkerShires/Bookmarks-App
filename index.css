@@ -82,7 +82,7 @@ a {
 
 .dropdown-content {
     position: absolute;
-    top: 9;
+    top: 22px;
     left: 0;
     background-color: lightgray;
     width: 126px;
